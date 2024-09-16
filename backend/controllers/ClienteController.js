@@ -2,6 +2,7 @@
 
 var cliente = require("../models/cliente ");
 var bcrypt = require("bcrypt-nodejs");
+var jwt = require("../helpers/jwt");
 
 // Registro de cliente
 const registro_cliente = async (req, res) => {
@@ -54,7 +55,7 @@ const login_cliente = async function (req, res) {
     let user = clientes_array[0];
     bcrypt.compare(data.password, user.password, async function (err, check) {
       if (check) {
-        return res.status(200).send({ data: user });
+        return res.status(200).send({ data: user, token: jwt.createToken(user) });
       } else {
         return res
           .status(200)

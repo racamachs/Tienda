@@ -2,6 +2,7 @@
 
 const admin = require("../models/admin");
 const bcrypt = require("bcrypt-nodejs");
+var jwt = require("../helpers/jwt");
 
 // Registro de administrador
 const registro_admin = async (req, res) => {
@@ -52,7 +53,7 @@ const login_admin = async function (req, res) {
     let user = admins_array[0];
     bcrypt.compare(data.password, user.password, async function (err, check) {
       if (check) {
-        return res.status(200).send({ data: user });
+        return res.status(200).send({ data: user, token: jwt.createToken(user) });
       } else {
         return res
           .status(200)
